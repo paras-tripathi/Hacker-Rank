@@ -1,0 +1,40 @@
+vector<double> runningMedian(vector<int> a) {
+
+priority_queue<int, vector<int>, less<int>> pq_max;
+priority_queue<int, vector<int>, greater<int>> pq_min;
+vector<double> result;
+vector<int> temp;
+
+for (auto b : a)
+{
+    if (pq_max.size() > 0 && pq_max.top() < b)
+        pq_min.push(b);
+    else
+        pq_max.push(b);
+
+    if (pq_max.size() > pq_min.size() + 1)
+    {
+        pq_min.push(pq_max.top());
+        pq_max.pop();
+    }
+    else if (pq_max.size() + 1 < pq_min.size())
+    {
+        pq_max.push(pq_min.top());
+        pq_min.pop();
+    }
+
+    if (pq_max.size() == pq_min.size())
+    {
+        result.push_back((pq_max.top() + pq_min.top()) / 2.0);
+    }
+    else
+    {
+        if (pq_max.size() > pq_min.size())
+            result.push_back(pq_max.top());
+        else
+            result.push_back(pq_min.top());
+    }
+}
+
+return result;
+}
